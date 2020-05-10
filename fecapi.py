@@ -24,16 +24,16 @@ class Fecdata:
 # self.payload["pages"]
 
 	def make_csv(self, payload):
-		with open("fecdata.csv", 'w', endline = '') as f:
+		with open("fecdata.csv", 'w') as f:
 			my_writer = csv.writer(f)
-			for contribution in range(self.payload["pages"]): #iterate through the json file 'pages' number of times	self.payload["pages"]
+			for contribution in range(2): #iterate through the json file 'pages' number of times	self.payload["pages"]
 			# url_with_key = "https://fec-dev-api.app.cloud.gov/v1/schedules/schedule_a/?api_key=gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv"
 				paginated_data = requests.get(self.url_with_key, self.payload)
 			# -- iterably append to our dataframe
 				for entry in paginated_data.json()["results"]:
 					my_writer.writerow(entry)
-			self.payload["last_index"] = paginated_data.json()["pagination"]["last_indexes"]["last_index"]
-			self.payload["last_contribution_receipt_date"] = paginated_data.json()["pagination"]["last_indexes"]["last_contribution_receipt_date"]
+				self.payload["last_index"] = paginated_data.json()["pagination"]["last_indexes"]["last_index"]
+				self.payload["last_contribution_receipt_date"] = paginated_data.json()["pagination"]["last_indexes"]["last_contribution_receipt_date"]
 
 	def make_df(self, payload):	#O(n^2) i think
 		df = pd.DataFrame()
