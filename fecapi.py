@@ -14,6 +14,7 @@ class Fecdata:
 		url = "https://fec-dev-api.app.cloud.gov/v1/schedules/schedule_a/?api_key="
 		self.url_with_key = url + self.key
 		data = requests.get(self.url_with_key + "&committee_id=" + str(self.committee_id))
+		self.fieldnames = data.json()["results"][0].keys()
 		self.payload = {"committee_id" : committee_id, 
 					"per_page": 100, 
 					"min_date" : min_date,
@@ -22,15 +23,15 @@ class Fecdata:
 					}
 # self.payload["pages"]
 
-	def make_csv(self, payload):
+	def make_csv(self, payload):		
 		with open("fecdata.csv", 'w') as f:
-			my_writer = csv.writer(f)
-			for contribution in self.payload["pages"]: #iterate through the json file 'pages' number of times	self.payload["pages"]
+
+			my_writer = csv.DictWriter(f, self.fieldnames)
+			for contribution in range(2): #iterate through the json file 'pages' number of times	self.payload["pages"]
 			# url_with_key = "https://fec-dev-api.app.cloud.gov/v1/schedules/schedule_a/?api_key=gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv"
 				paginated_data = requests.get(self.url_with_key, self.payload)
 			# -- iterably append to our dataframe
-				for entry in range(len(paginated_data.json()["results"])):
-					my_writer.writerow(paginated_data.json()[entry])
+				my_writer.writerows(paginated_data.json()["results"])
 				self.payload["last_index"] = paginated_data.json()["pagination"]["last_indexes"]["last_index"]
 				self.payload["last_contribution_receipt_date"] = paginated_data.json()["pagination"]["last_indexes"]["last_contribution_receipt_date"]
 
@@ -67,8 +68,8 @@ class Fecdata:
 
 
 def main():
-	data = Fecdata()
-	data.create_payload_and_url(data.min_date, data.committee_id, data.key)
-	data.test(data.payload)
+	req = Fecdata()
+	req.create_payload_and_url(req.min_date, req.committee_id, req.key)
+	req.make_csv(req.payload)
 
 main()
