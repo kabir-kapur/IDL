@@ -1,10 +1,10 @@
 # gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv -- current key
 # reminder -- 81 elements per dictionary entry
 
-import requests, json, csv, time, threading
+import requests, json, csv, time, threading, os
 
 class Fecdata:
-	def __init__(self, min_date = "2019-07-01", committee_id = "C00401224", key = "gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv"):
+	def __init__(self, min_date = "2019-07-01", committee_id = "C00401224", key = os.environ.get('FECAPIKEY')):
 		self.min_date = min_date
 		self.committee_id = committee_id
 		self.key = key
@@ -28,16 +28,23 @@ class Fecdata:
 			my_writer = csv.DictWriter(f, fieldnames = self.fieldnames)
 			my_writer.writeheader()
 			request_counter = 0
-			yesfor contribution in range(2): #iterate through the json file 'pages' number of times	self.payload["pages"]
-			# url_with_key = "https://fec-dev-api.app.cloud.gov/v1/schedules/schedule_a/?api_key=gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv"
+			epoch = time.time()
+			for contribution in range(2): #iterate through the json file 'pages' number of times	self.payload["pages"]
+				if (time.time() - epoch) >=60.:
+					request_counter = 0
+					epoch = time.time()
+				elif request_counter >= 120:
+					request_counter = 0
+					time.rest(61 - (time.time() - epoch))
+					epoch = time.time()
+					# url_with_key = "https://fec-dev-api.app.cloud.gov/v1/schedules/schedule_a/?api_key=gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv"
 				paginated_data = requests.get(self.url_with_key, self.payload)
 				request_counter += 1
-			# -- iterably append to our dataframe
+				# -- iterably append to our dataframe
 				for i in paginated_data.json()["results"]:
 					my_writer.writerow(i)
 				self.payload["last_index"] = paginated_data.json()["pagination"]["last_indexes"]["last_index"]
 				self.payload["last_contribution_receipt_date"] = paginated_data.json()["pagination"]["last_indexes"]["last_contribution_receipt_date"]
-				return contribution, time.time()
 
 	
 
