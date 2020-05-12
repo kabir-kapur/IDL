@@ -1,6 +1,3 @@
-# gqSCsqNyEqmnJzLT6iyhAWcz1vJeBbGycNkm9Gyv -- current key
-# reminder -- 81 elements per dictionary entry
-
 import requests, json, csv, time, threading, os
 
 
