@@ -2,11 +2,12 @@ import os, csv
 import networkx as nx
 import matplotlib.pyplot as plt
 
-G = nx.DiGraph()
+G = nx.petersen_graph() # 10 nodes and 15 edges
+plt.subplot(121)
 
-G.add_node('Kabir')
-G.add_node('Sex')
-G.add_edge('Kabir', 'Sex')
+nx.draw(G, with_labels = True, font_weight = 'bold')
+plt.subplot(122)
 
-nx.draw_spectral(G, with_labels = True, node_size = 3000)
+nx.draw_shell(G, nlist = [range(5, 10), range(5)], with_labels = True, font_weight = 'bold')
+
 plt.show()
