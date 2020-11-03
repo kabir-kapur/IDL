@@ -2,12 +2,8 @@ import os, csv
 import networkx as nx
 import matplotlib.pyplot as plt
 
-G = nx.petersen_graph() # 10 nodes and 15 edges
-plt.subplot(121)
+def noteParties(): # use this method to find and assign party preference using propublica api 
 
-nx.draw(G, with_labels = True, font_weight = 'bold')
-plt.subplot(122)
+def
 
-nx.draw_shell(G, nlist = [range(5, 10), range(5)], with_labels = True, font_weight = 'bold')
-
-plt.show()
+def 
