@@ -12,25 +12,20 @@ def makeNetworkList():
 jjjj
 if they are accounts of American congresspeople or select think tanks.'''
 	ls = []
-	thinkTanks = []
 	filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs' 
 	for i in os.listdir(filepath): # returns tuple with index 2 value being a list
 		content = i[:(len(i)-len('tweets.csv'))]
-		if '@' in content: # only congressional accounts have '@' in the name as per my nomenclature choices
+		if '@' in content and 'tweets' in i: # only congressional accounts have '@' in the name as per my nomenclature choices
 			ls.append(content)
-		else:
-			thinkTanks.append(content)
-	if len(thinkTanks) == 0:
-		thinkTanks = None
-	elif len(ls) == 0:
+	if len(ls) == 0:
 		ls = None
 
-	return ls, thinkTanks # return congressional accounts and thinkTanks lists
+	return ls # return congressional accounts and thinkTanks list
 		
 
 
 
-def makeAdjMatrix(ls = None , thinkTanks = None):
+def makeAdjMatrix(ls = None):
 	'''array representation -- rows: account itself ('from') columnns: rt account ('to') 
 	intersection: weight of connection (number of times from rtd to'''
 	row = {rt_acct : 0 for rt_acct in ls}
@@ -38,7 +33,7 @@ def makeAdjMatrix(ls = None , thinkTanks = None):
 	counter = 0
 	
 	filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'
-	if ls == None or thinkTanks == None:
+	if ls == None:
 		print("Call makeNetworkList() function on a valid directory")
 		return
 	for i in os.listdir(filepath): # returns tuple with index 2 value being a list
@@ -54,7 +49,7 @@ def makeAdjMatrix(ls = None , thinkTanks = None):
 						if 'RT @' in i[4] and (i[4].split(' ')[1][:len(i[4].split(' ')[1]) - 1]) in ls:
 							try:
 								adj[user[:(len(user)-len('tweets.csv'))]][i[4].split(' ')[1][:len(i[4].split(' ')[1]) - 1]] += 1
-							except KeyError:
+							except KeyError: 
 								print(user[:(len(user)-len('tweets.csv'))])
 					except IndexError:
 						print("IndexError handling this Tweet.")
@@ -67,7 +62,7 @@ def makeAdjMatrix(ls = None , thinkTanks = None):
 		# 		for column in df[row]:
 					
 
-makeAdjMatrix(makeNetworkList()[0], makeNetworkList()[1])
+print(makeAdjMatrix(makeNetworkList()))
 
 # G = nx.complete_graph(20)
 
