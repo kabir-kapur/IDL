@@ -4,22 +4,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import json
+# from networkx.drawing.nx_agraph import graphviz_layout
+
 """ use nested lists (n lists with n elements to represent rows and columns) as a way of representing the adjacency matrix used to put out network.
 n should be probably around 500-ish and 'hits' only account for in-network accounts"""
 
-def makeNetworkList():
+def makeNetworkList(filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'):
 	''' tells you which accounts are 'in-network'. Accounts are considered in-network 
-jjjj
+
 if they are accounts of American congresspeople or select think tanks.'''
 	ls = []
-	filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs' 
 	for i in os.listdir(filepath): # returns tuple with index 2 value being a list
-		content = i[:(len(i)-len('tweets.csv'))]
+		content = i[:(len(i)-len('tweets.csv'))] # assuming the directory follows my pesonal naming convention for theese files
 		if '@' in content and 'tweets' in i: # only congressional accounts have '@' in the name as per my nomenclature choices
 			ls.append(content)
 	if len(ls) == 0:
 		ls = None
-
 	return ls # return congressional accounts and thinkTanks list
 		
 
@@ -30,7 +30,8 @@ def makeAdjMatrix(ls = None):
 	intersection: weight of connection (number of times from rtd to'''
 	row = {rt_acct : 0 for rt_acct in ls}
 	adj = {acct : row for acct in ls} # master dict
-	counter = 0
+	count = 0
+	innercount = 0
 	
 	filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'
 	if ls == None:
@@ -39,30 +40,43 @@ def makeAdjMatrix(ls = None):
 	for i in os.listdir(filepath): # returns tuple with index 2 value being a list
 		pathAndName = filepath + "/" + str(i)
 		user = str(i)
+		count += 1
 		if ('.csv' in user):
 			with open(pathAndName, "r") as f:
 				innerdict = {}
 				reader = csv.reader(f, delimiter=',')
-				for i in reader:	
-					counter += 1
+				for j in reader:	
+					innercount += 1
 					try:	
-						if 'RT @' in i[4] and (i[4].split(' ')[1][:len(i[4].split(' ')[1]) - 1]) in ls:
+						if 'RT @' in j[4] and (j[4].split(' ')[1][:len(j[4].split(' ')[1]) - 1]) in ls:
 							try:
-								adj[user[:(len(user)-len('tweets.csv'))]][i[4].split(' ')[1][:len(i[4].split(' ')[1]) - 1]] += 1
+								adj[user[:(len(user)-len('tweets.csv'))]][j[4].split(' ')[1][:len(j[4].split(' ')[1]) - 1]] += 1
 							except KeyError: 
 								print(user[:(len(user)-len('tweets.csv'))])
 					except IndexError:
-						print("IndexError handling this Tweet.")
-
+						print("IndexError handling " + i + "!")
 	return adj
 
-		# with open(pathAndName, 'r') as f:
-		# 	df = pd.read_csv(f)
-		# 	for row in df:
-		# 		for column in df[row]:
 					
+def makeDiGraph(adjacencyMatrix = None):
+	G = nx.DiGraph()
+	for i in adjacencyMatrix:
+		G.add_node(i)
+	for i in adjacencyMatrix:
+		for j in adjacencyMatrix[i]:
+			if adjacencyMatrix[i][j] > 0:
+				G.add_edge(i, j, weight = adjacencyMatrix[i][j])
+	# nx.nx_agraph.graphviz_layout(G, prog = 'my_shit') # need pygraphviz and that is a whole ordeal
+	nx.draw(G)
+	plt.show()
 
-print(makeAdjMatrix(makeNetworkList()))
+makeDiGraph(makeAdjMatrix(makeNetworkList()))
+# makeDiGraph(makeAdjMatrix(makeNetworkList()))
+
+
+# print(makeAdjMatrix(makeNetworkList()))
+
+
 
 # G = nx.complete_graph(20)
 
