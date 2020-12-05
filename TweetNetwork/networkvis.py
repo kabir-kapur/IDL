@@ -14,15 +14,13 @@ def makeNetworkList(filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncat
 
 if they are accounts of American congresspeople or select think tanks.'''
 	ls = []
-	for i in os.listdir(filepath): # returns tuple with index 2 value being a list
+	for i in list(os.listdir(filepath))[:10]: # returns tuple with index 2 value being a list
 		content = i[:(len(i)-len('tweets.csv'))] # assuming the directory follows my pesonal naming convention for theese files
 		if '@' in content and 'tweets' in i: # only congressional accounts have '@' in the name as per my nomenclature choices
 			ls.append(content)
 	if len(ls) == 0:
 		ls = None
 	return ls # return congressional accounts and thinkTanks list
-		
-
 
 
 def makeAdjMatrix(ls = None):
@@ -37,7 +35,7 @@ def makeAdjMatrix(ls = None):
 	if ls == None:
 		print("Call makeNetworkList() function on a valid directory")
 		return
-	for i in os.listdir(filepath): # returns tuple with index 2 value being a list
+	for i in list(os.listdir(filepath))[:10]: # returns tuple with index 2 value being a list
 		pathAndName = filepath + "/" + str(i)
 		user = str(i)
 		count += 1
@@ -57,9 +55,12 @@ def makeAdjMatrix(ls = None):
 						print("IndexError handling " + i + "!")
 	return adj
 
+# def makeCytoscapeList(ls = None):
+
+
 					
 def makeDiGraph(adjacencyMatrix = None):
-	G = nx.DiGraph()
+	G = nx.DiGraph() # DiGraph is a directed graph with looping
 	for i in adjacencyMatrix:
 		G.add_node(i)
 	for i in adjacencyMatrix:
@@ -67,7 +68,8 @@ def makeDiGraph(adjacencyMatrix = None):
 			if adjacencyMatrix[i][j] > 0:
 				G.add_edge(i, j, weight = adjacencyMatrix[i][j])
 	# nx.nx_agraph.graphviz_layout(G, prog = 'my_shit') # need pygraphviz and that is a whole ordeal
-	nx.draw(G)
+	plt.figure(figsize = (20,20))
+	nx.draw_circular(G)
 	plt.show()
 
 makeDiGraph(makeAdjMatrix(makeNetworkList()))
