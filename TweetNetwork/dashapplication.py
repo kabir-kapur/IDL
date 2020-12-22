@@ -1,3 +1,41 @@
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+import networkvis
+
+def makeElementsList(inlist = networkvis.makeNetworkList()):
+    dataVal = {'id' : None, 'label' : None} # elements 'data' entry in 
+    elsList = []
+    for i in inlist:
+        tempDataVal = dataVal.copy()
+        tempDataVal['id'] = i
+        tempDataVal['label'] = i
+        elsList.append(tempDataVal) 
+    for i, j in networkvis.makeAdjMatrix(inlist).items():
+        for k, l in j.items():
+            if l != 0:
+                elsList.append({'data' : {'source' : i, 'target' : k}})
+    # print(elslist)
+    return elsList
+
+
+app = dash.Dash(__name__)
+# instantiate Dash object
+app.layout = html.Div([
+    # begin html coding
+    cyto.Cytoscape(
+        id='cytoscape_tweet_network',
+        layout={'name': 'circle'},
+        style={'width': '100%', 'height': '100px'},
+        # elements=networkvis.makeNetworkList()[:10]
+        elements= makeElementsList()
+    )
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+
+
 # import dash
 # import dash_cytoscape as cyto
 # import dash_html_components as html
@@ -6,31 +44,16 @@
 # App = dash.Dash(__name__)
 
 # App.layout = html.Div([
-# 	cyto.Cytoscape(
-# 		id = 'cytoscape-two-nodes', 
-# 		layout = {'name' : 'preset'},
-# 		style = {'width' : '100%', 'height' : '400px'}
-# 	)]
-
-
-import dash
-import dash_cytoscape as cyto
-import dash_html_components as html
-
-app = dash.Dash(__name__)
-
-app.layout = html.Div([
-    cyto.Cytoscape(
-        id='cytoscape-two-nodes',
-        layout={'name': 'preset'},
-        style={'width': '100%', 'height': '400px'},
-        elements=[
+#   cyto.Cytoscape(
+#       id = 'cytoscape-two-nodes', 
+#       layout = {'name' : 'preset'},
+#       style = {'width' : '100%', 'height' : '400px'}
+#   )]
+'''        elements=[
             {'data': {'id': 'one', 'label': 'Node 1'}, 'position': {'x': 75, 'y': 75}},
             {'data': {'id': 'two', 'label': 'Node 2'}, 'position': {'x': 200, 'y': 200}},
             {'data': {'source': 'one', 'target': 'two'}}
-        ]
-    )
-])
+        ]'''
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+
+
