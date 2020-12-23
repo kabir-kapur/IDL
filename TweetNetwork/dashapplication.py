@@ -18,7 +18,6 @@ def makeElementsList(inlist = networkvis.makeNetworkList()):
     # print(elslist)
     return elsList
 
-
 app = dash.Dash(__name__)
 # instantiate Dash object
 app.layout = html.Div([
@@ -26,7 +25,7 @@ app.layout = html.Div([
     cyto.Cytoscape(
         id='cytoscape_tweet_network',
         layout={'name': 'circle'},
-        style={'width': '100%', 'height': '100px'},
+        style={'width': '100%', 'height': '1000px'},
         # elements=networkvis.makeNetworkList()[:10]
         elements= makeElementsList()
     )
