@@ -9,12 +9,39 @@ import json
 """ use nested lists (n lists with n elements to represent rows and columns) as a way of representing the adjacency matrix used to put out network.
 n should be probably around 500-ish and 'hits' only account for in-network accounts"""
 
+# currd = {'@RepFinkenauer': 'd', '@RepLindaSanchez': 'd', '@RepKatieHill': 'd', '@RepTimBurchett': 'r', '@SenBooker': 'd', '@RepSylviaGarcia': 'd', '@RepDelBene': 'd',
+#  '@amprog': 't', '@RepMcNerney': 'd', '@RepJuanVargas': 'd', '@RepJeffries': 'd', '@TXRandy14': 'r', '@RepCartwright': 'd', '@RepRooney': 'r', '@RepSpanberger': 'd', 
+#  '@RobWittman': 'r', '@CongressmanHice': 'r', '@RepJackBergman': 'r', '@MarioDB': 'r', '@SenatorEnzi': 'r', '@RepDebHaaland': 'd', '@RepAdrianSmith': 'r', '@RepMullin': 'r', 
+#  '@brookingsinst': 't', '@RepUnderwood': 'd', '@RepRashida': 'd', '@RepBeatty': 'd', '@BettyMcCollum04': 'd', '@RepAdamSmith': 'd', '@maziehirono': 'd', '@SenatorHassan': 'd', 
+#  '@HurdOnTheHill': 'r', '@SenJohnKennedy': 'r', '@RepDeanPhillips': 'd', '@AEIfdp': 't', '@RepBrianFitz': 'r', '@DonaldNorcross': 'd', '@RepJahanaHayes': 'd', '@DrNealDunnFL2': 'r', 
+#  '@CAPTalksRace': 't', '@SenatorShaheen': 'd', '@SenJackReed': 'd', '@Heritage': 't', '@BrookingsEcon': 't', '@RepDonBeyer': 'd', '@virginiafoxx': 'r', '@CatoInstitute': 't', 
+#  '@repdavidscott': 'd', '@SenJoniErnst': 'r', '@RepRoKhanna': 'd', '@CongressmanGT': 'r', '@RepDLamborn': 'r', '@chelliepingree': 'd', '@SenA': 't', '@RepTomEmmer': 'r', 
+# '@BobbyScott': 'd', '@RepPaulMitchell': 'i', '@MikeCrapo': 'r', '@SenatorCantwell': 'd', '@RepBenCline': 'r', '@RepDean': 'd', '@WarrenDavidson': 'r', '@michaelcburgess': 'r', 
+# '@SenatorTester': 'd', '@SenRickScott': 'r', '@RepWebster': 'r', '@RepTedBudd': 'r', '@SenateMajLdr': 'r', '@RepMGS': 'd', '@RepAlexMooney': 'r', '@RepTrey': 'r', '@RepRonWright': 'r', 
+# '@RepAlGreen': 'd', '@RepSherrill': 'd', '@RepGarretGraves': 'r', '@RepPeteAguilar': 'd', '@RepEscobar': 'd', '@RepKatiePorter': 'd', '@SenTedCruz': 'r', '@SenatorBraun': 'r', '@SenKamalaHarris': 'd', 
+# '@RepDanKildee': 'd', '@RepLowenthal': 'd', '@BennieGThompson': 'd', '@SenMcSallyAZ': 'r', '@SenatorCarper': 'd', '@DesJarlaisTN04': 'r', '@MikeKellyPA': 'r', '@ChrisCoons': 'd', '@RepJerryNadler': 'd', 
+# '@RepClayHiggins': 'r', '@RepChuck': 'r', '@RepCarolMiller': 'r', '@RepDavid': 'r', '@RepKirkpatrick': 'd', '@NewAmerica': 't', '@SenBlumenthal': 'd', '@RepPeteKing': 'r', '@RepJoseSerrano': 'd', 
+# '@NewAmericaEd': 't', '@RepLawrence': 'd', '@JoaquinCastrotx': 'd', '@CongPalazzo': 'r', '@SenCapito': 'r', '@lisamurkowski': 'r', '@NEDemocracy': 't', '@RepCarbajal': 'd', '@repgregwalden': 'r', 
+# '@RepTipton': 'r', '@RepJasonSmith': 'r', '@justinamash': 'i', '@RepGusBilirakis': 'r', '@RepRaulGrijalva': 'd', '@RepDLesko': 'r', '@RepTomSuozzi': 'd', '@RepDavidKustoff': 'r', '@RepJoeNeguse': 'd', 
+# '@RepSusanWild': 'd', '@RepKevinBrady': 'r', '@SenCoryGardner': 'r', '@BrookingsMetro': 't', '@RepDaveJoyce': 'r', '@RepJohnJoyce': 'r', '@RepShalala': 'd', '@JudgeCarter': 'r', '@SenatorMenendez': 'd', 
+# '@ChrisVanHollen': 'd', '@SenSchumer': 'd', '@RepBarbaraLee': 'd', '@RepMikeTurner': 'r', '@JimInhofe': 'r', '@SenatorWicker': 'r', '@SteveScalise': 'r', '@SenatorBennet': 'd', '@SenMikeLee': 'r', 
+# '@GKButterfield': 'd', '@RepPerlmutter': 'd', '@RepByrne': 'r', '@RepWexton': 'd', '@RepTedDeutch': 'd', '@RepBonamici': 'd', '@CongBoyle': 'd', '@JerryMoran': 'r', '@CAPenergypolicy': 't', '@AIPAC': 't', 
+# '@SenatorDurbin': 'd', '@RepHolding': 'r', '@SenatorRomney': 'r', '@RepSusanDavis': 'd', '@RepKClark': 'd', '@RepMarthaRoby': 'r', '@SenCortezMasto': 'd', '@RepDebDingell': 'd', '@RepCharlieCrist': 'd', 
+# '@RepRichmond': 'd', '@SenSherrodBrown': 'd', '@RepJasonCrow': 'd', '@CongressmanJVD': 'r', '@RepChuyGarcia': 'd', '@RepConorLamb': 'd', '@RepDerekKilmer': 'd', '@USRepLong': 'r', '@RepBillJohnson': 'r', 
+# '@RepBrianMast': 'r', '@MacTXPress': 'r', '@SenatorIsakson': 'r', '@RepDianaDeGette': 'd', '@RepMikeRogersAL': 'r', '@ChuckGrassley': 'r', '@JeffFortenberry': 'r', '@RepDavidEPrice': 'd', '@RepVeasey': 'd', 
+# '@RepMarkGreen': 'r', '@RepRubenGallego': 'd', '@RepTomGraves': 'r', '@MarshaBlackburn': 'r'}
+
+# # nextInd = "@CongressmanGT"
+
+# print(len(currd))
+# quit()
+
 def makeNetworkList(filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'):
 	''' tells you which accounts are 'in-network'. Accounts are considered in-network 
 
 if they are accounts of American congresspeople or select think tanks.'''
 	ls = []
-	for i in list(os.listdir(filepath)): # returns tuple with index 2 value being a list
+	for i in list(os.listdir(filepath))[:10]: # returns tuple with index 2 value being a list
 		content = i[:(len(i)-len('tweets.csv'))] # assuming the directory follows my pesonal naming convention for theese files
 		if '@' in content and 'tweets' in i: # only congressional accounts have '@' in the name as per my nomenclature choices
 			ls.append(content)
@@ -35,7 +62,7 @@ def makeAdjMatrix(ls = None):
 	if ls == None:
 		print("Call makeNetworkList() function on a valid directory")
 		return
-	for i in list(os.listdir(filepath)): # returns tuple with index 2 value being a list
+	for i in list(os.listdir(filepath))[:10]: # returns tuple with index 2 value being a list
 		pathAndName = filepath + "/" + str(i)
 		user = str(i)
 		count += 1
@@ -120,6 +147,7 @@ def makePartiesDict(inputList = makeNetworkList()):
 				print("Invalid input! Try again.")
 	except KeyboardInterrupt:
 		print(outputDict)
+		print("Next index: " + inputList[i+1])
 		return(outputDict)
 	print(outputDict)
 	return outputDict
@@ -133,7 +161,7 @@ def makePartiesDict(inputList = makeNetworkList()):
 	# 	 	print("Invalid input! Try again: ")
 	# 	 	continue
 		 	
-
+# makePartiesDict()
 
 					
 def makeDiGraph(adjacencyMatrix = None):

@@ -4,19 +4,19 @@ import dash_html_components as html
 import networkvis
 
 def makeElementsList(inlist = networkvis.makeNetworkList()):
-    dataVal = {'id' : None, 'label' : None} # elements 'data' entry in 
     elsList = []
-    for i in inlist:
-        tempDataVal = dataVal.copy()
-        tempDataVal['id'] = i
-        tempDataVal['label'] = i
-        elsList.append(tempDataVal) 
-    for i, j in networkvis.makeAdjMatrix(inlist).items():
-        for k, l in j.items():
+    for i in inlist[:10]:
+        elsList.append({'data' : {'id' : str(i), 'label' : str(i)}}) 
+    for i, j in list(networkvis.makeAdjMatrix(inlist).items())[:10]:
+        for k, l in list(j.items())[:10]:
             if l != 0:
-                elsList.append({'data' : {'source' : i, 'target' : k}})
+                elsList.append({'data' : {'source' : str(i), 'target' : str(k)}})
     # print(elslist)
     return elsList
+
+# print(makeElementsList())
+# quit()
+
 
 app = dash.Dash(__name__)
 # instantiate Dash object
