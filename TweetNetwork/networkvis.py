@@ -45,7 +45,7 @@ def makeNetworkList(filepath = '/afs/cats.ucsc.edu/users/y/krkapur/IDL/TweetNetw
 
 if they are accounts of American congresspeople or select think tanks.'''
 	ls = []
-	for i in list(os.listdir(filepath))[:10]: # returns tuple with index 2 value being a list
+	for i in list(os.listdir(filepath)): # returns tuple with index 2 value being a list
 		content = i[:(len(i)-len('tweets.csv'))] # assuming the directory follows my pesonal naming convention for theese files
 		if '@' in content and 'tweets' in i: # only congressional accounts have '@' in the name as per my nomenclature choices
 			ls.append(content)
@@ -67,7 +67,7 @@ def makeAdjMatrix(ls = None, filepath = "/afs/cats.ucsc.edu/users/y/krkapur/IDL/
 	if ls == None:
 		print("Call makeNetworkList() function on a valid directory")
 		return
-	for i in list(os.listdir(filepath))[:10]: # returns tuple with index 2 value being a list
+	for i in list(os.listdir(filepath)): # returns tuple with index 2 value being a list
 		pathAndName = filepath + "/" + str(i)
 		user = str(i)
 		count += 1
