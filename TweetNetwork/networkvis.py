@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import json
+
+'''
+filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'  <--- wd for my machine
+'''
 # from networkx.drawing.nx_agraph import graphviz_layout
 
 """ use nested lists (n lists with n elements to represent rows and columns) as a way of representing the adjacency matrix used to put out network.
@@ -36,7 +40,7 @@ n should be probably around 500-ish and 'hits' only account for in-network accou
 # print(len(currd))
 # quit()
 
-def makeNetworkList(filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'):
+def makeNetworkList(filepath = '/afs/cats.ucsc.edu/users/y/krkapur/IDL/TweetNetwork/CongressionalTweetsData'):
 	''' tells you which accounts are 'in-network'. Accounts are considered in-network 
 
 if they are accounts of American congresspeople or select think tanks.'''
@@ -50,7 +54,7 @@ if they are accounts of American congresspeople or select think tanks.'''
 	return ls # return congressional accounts and thinkTanks list
 
 
-def makeAdjMatrix(ls = None):
+def makeAdjMatrix(ls = None, filepath = "/afs/cats.ucsc.edu/users/y/krkapur/IDL/TweetNetwork/CongressionalTweetsData"):
 	'''array representation -- rows: account itself ('from') columnns: rt account ('to') 
 	intersection: weight of connection (number of times from rtd to'''
 	row = {rt_acct : 0 for rt_acct in ls}
@@ -58,7 +62,8 @@ def makeAdjMatrix(ls = None):
 	count = 0
 	innercount = 0
 	
-	filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'
+	# filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'
+	# filepath = '/Users/kabirkapur/Desktop/TweetTracker/Untruncated With RTs'
 	if ls == None:
 		print("Call makeNetworkList() function on a valid directory")
 		return
