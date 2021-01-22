@@ -5,10 +5,10 @@ import networkvis
 
 def makeElementsList(inlist = networkvis.makeNetworkList()):
     elsList = []
-    for i in inlist[:10]:
+    for i in inlist:
         elsList.append({'data' : {'id' : str(i), 'label' : str(i)}}) 
-    for i, j in list(networkvis.makeAdjMatrix(inlist).items())[:10]:
-        for k, l in list(j.items())[:10]:
+    for i, j in list(networkvis.makeAdjMatrix(inlist).items()):
+        for k, l in list(j.items()):
             if l != 0:
                 elsList.append({'data' : {'source' : str(i), 'target' : str(k)}})
     # print(elslist)
@@ -56,3 +56,4 @@ if __name__ == '__main__':
 
 
 
+# ssh -N -f -L localhost:7890:localhost:7890 azshenoy@econ-data.ucsc.edu
