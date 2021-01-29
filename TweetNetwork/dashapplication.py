@@ -14,18 +14,13 @@ def makeElementsList(inlist = networkvis.makeNetworkList()):
     # print(elslist)
     return elsList
 
-# print(makeElementsList())
-# quit()
-
-
 app = dash.Dash(__name__)
 # instantiate Dash object
 app.layout = html.Div([
-    # begin html coding
     cyto.Cytoscape(
         id='cytoscape_tweet_network',
         layout={'name': 'circle'},
-        style={'width': '100%', 'height': '1000px'},
+        # style={'width': '100%', 'height': '1000px'},
         # elements=networkvis.makeNetworkList()[:10]
         elements= makeElementsList()
     )
@@ -56,4 +51,4 @@ if __name__ == '__main__':
 
 
 
-# ssh -N -f -L localhost:7890:localhost:7890 azshenoy@econ-data.ucsc.edu
+# ssh -N -f -L localhost:8050:localhost:8050 krkapur@socs-stats.ucsc.edu
